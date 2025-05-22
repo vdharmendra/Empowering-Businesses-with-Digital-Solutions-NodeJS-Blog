@@ -31,7 +31,23 @@ const contactusContent = {
     p: 'Have a question, project idea, or just want to say hello? We’d love to hear from you. Whether you re looking for expert advice, a custom digital solution, or support with your existing systems'
 }
 
-var posts = [];
+var posts = [{
+        title:'Digital Mycelium: The Invisible Code Behind Great Websites',
+        desc: 'Just like mycelium powers ecosystems underground, clean, efficient code powers seamless digital experiences. Discover how good development practices form the backbone of every successful site.'
+    },
+    {
+        title:'Fungal Design: How Nature Inspires User-Friendly Websites',
+        desc: 'Nature\'s design is intuitive, functional, and beautiful—so should your website be. Learn how web design can borrow from the organic principles of the fungal world to enhance usability and aesthetics.'
+    },
+    {
+        title:'SEO Underground: The Hidden Web That Drives Traffic',
+        desc: 'Fungi transfer nutrients invisibly, much like SEO transfers authority and traffic across the web. Explore how behind-the-scenes optimization connects your content with the users searching for it.'
+    },
+    {
+        title:'The Mycelial Web: Building Interconnected Digital Ecosystems',
+        desc: 'Fungi create networks that support entire forests. Likewise, smart linking strategies, APIs, and integrated tools create strong digital ecosystems. Learn how to build connections that grow your online presence'
+    }
+];
 
 
 // HANDLING REQUEST & RESPONSE [ GET Request ]
@@ -47,7 +63,7 @@ app.post("/compose", function(req,res){
     console.log(req.body.postTitle);
     const post = {
         title: req.body.postTitle,
-        desce: req.body.postDesc
+        desc: req.body.postDesc
     };
     posts.push(post);
     res.redirect("/");
