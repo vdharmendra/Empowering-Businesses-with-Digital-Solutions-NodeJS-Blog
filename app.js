@@ -2,7 +2,7 @@
 // EXPRESS 
 const express = require('express');
 // BODY-PERSER
-const bodyParser = require('body-parser')
+const bodyParser = require('body-parser');
 
 const app = express();
 
@@ -11,6 +11,10 @@ app.use(express.static("public"));
 app.set("view engine", 'ejs');
 
 
+const heroBannerContent ={
+    h1: 'Digital Mycelium',
+    p: 'What Fungi Teach Us About Web Design and SEO'
+};
 
 const homeContent ={
     h1: 'Empowering Businesses with Digital Solutions',
@@ -27,20 +31,27 @@ const contactusContent = {
     p: 'Have a question, project idea, or just want to say hello? We’d love to hear from you. Whether you re looking for expert advice, a custom digital solution, or support with your existing systems'
 }
 
+var posts = [];
 
 
 // HANDLING REQUEST & RESPONSE [ GET Request ]
 // sendFile function used [ not send function ]
 app.get("/", function(req, res){
-    res.render("index", {heroBanner: homeContent});
+    res.render("index", {heroBannerText : heroBannerContent ,heroBanner: homeContent, posts: posts});
     // res.send("HOME");
 });
 
 //  HANDLING REQUEST & RESPONSE [ POST Request ]
 
-// app.post("/", function(req,res){
-//     
-// });
+app.post("/compose", function(req,res){
+    console.log(req.body.postTitle);
+    const post = {
+        title: req.body.postTitle,
+        desce: req.body.postDesc
+    };
+    posts.push(post);
+    res.redirect("/");
+});
 
 
 
@@ -49,7 +60,7 @@ app.get("/", function(req, res){
 // BLOGS PAGE 
 // THIS IS CONTACT US PAGE
 app.get("/blogs", function(req,res){
-    res.render("index", {heroBanner: homeContent});
+    res.render("blogs", {posts: posts});
 });
 // ABOUT US PAGE 
 app.get("/aboutus", function(req,res){
@@ -59,7 +70,10 @@ app.get("/aboutus", function(req,res){
 app.get("/contactus", function(req,res){
     res.render("contactus", {heroBannercontactus: contactusContent});
 });
-
+// COMPOSE ROUTE
+app.get("/compose", function(req,res){
+    res.render("compose", {heroBanner: homeContent});
+});
 // EXPRESS APP LISTENING ON PORT 3000
 app.listen(3000, function(){
     console.log("Server up and running on port 3000");

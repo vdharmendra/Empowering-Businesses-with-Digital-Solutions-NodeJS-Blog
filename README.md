@@ -29,7 +29,8 @@ NodeBlogsWebsite/
 │   ├── home.ejs              # Home page content
 │   ├── about.ejs             # About page content
 │   ├── contact.ejs           # Contact Us page content
-│   └── layout.ejs (optional) # Shared layout if used
+│   ├── blogs.ejs             # Blogs page content
+│   └── compose.ejs           # Shared Compose if used
 ├── app.js                    # Main server logic
 ├── package.json
 └── README.md
@@ -47,21 +48,6 @@ NodeBlogsWebsite/
 "Have a question or project idea? Let’s build something together. Reach out via our contact form or email us directly at support@example.com."
 
 
-### 🛠️ How It Works
-Express Routing (app.js)
-```bash
-app.get("/", (req, res) => {
-  res.render("home");
-});
-
-app.get("/about", (req, res) => {
-  res.render("about");
-});
-
-app.get("/contact", (req, res) => {
-  res.render("contact");
-});
-```
 ### Static Middleware for CSS
 ```bash
 app.use(express.static("public"));
@@ -76,6 +62,71 @@ Each .ejs file includes header and footer like this:
 <!-- Page-specific content -->
 
 <%- include("partials/footer") %>
+
+```
+
+### 🛠️ How It Works
+Express Routing (app.js)
+```bash
+// jshintversion:6
+// EXPRESS 
+const express = require('express');
+// BODY-PERSER
+const bodyParser = require('body-parser');
+
+const app = express();
+
+app.use(bodyParser.urlencoded({extend:true}));
+app.use(express.static("public"));
+app.set("view engine", 'ejs');
+
+
+var posts = [];
+
+
+// HANDLING REQUEST & RESPONSE [ GET Request ]
+// sendFile function used [ not send function ]
+app.get("/", function(req, res){
+    res.render("index", {heroBannerText : heroBannerContent ,heroBanner: homeContent, posts: posts});
+});
+
+//  HANDLING REQUEST & RESPONSE [ POST Request ]
+
+app.post("/compose", function(req,res){
+    console.log(req.body.postTitle);
+    const post = {
+        title: req.body.postTitle,
+        desce: req.body.postDesc
+    };
+    posts.push(post);
+    res.redirect("/");
+});
+
+
+
+
+// UNDERSTANDING & WORKING WITH ROUTES
+// BLOGS PAGE 
+// THIS IS CONTACT US PAGE
+app.get("/blogs", function(req,res){
+    res.render("blogs", {posts: posts});
+});
+// ABOUT US PAGE 
+app.get("/aboutus", function(req,res){
+    res.render("aboutus", {heroBanneraboutus: aboutusContent});
+});
+// THIS IS CONTACT US PAGE
+app.get("/contactus", function(req,res){
+    res.render("contactus", {heroBannercontactus: contactusContent});
+});
+// COMPOSE ROUTE
+app.get("/compose", function(req,res){
+    res.render("compose", {heroBanner: homeContent});
+});
+// EXPRESS APP LISTENING ON PORT 3000
+app.listen(3000, function(){
+    console.log("Server up and running on port 3000");
+});
 
 ```
 
